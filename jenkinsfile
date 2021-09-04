@@ -1,4 +1,9 @@
 node {
+    def remote = [:]
+    remote.name = 'test'
+    remote.host = '192.168.19.200'
+    remote.user = 'root'
+
 	stage('Print Message') {
 		echo "【start build】 workspace: ${WORKSPACE}"
 	}
@@ -22,10 +27,9 @@ node {
 		sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
 	}
 
-	stage('Deploy to the Target server') {
-		echo "【启动服务】"
-		sh 'ssh 192.168.19.200'
-		sh 'chmod u+x /opt/sh/test.sh'
-		sh '/opt/sh/test.sh restart base-springboot.jar'
-	}
+	stage('Remote SSH') {
+        sshScript remote: remote, script: "/opt/sh/test.sh restart base-springboot.jar"
+    }
+
+	
 }
