@@ -29,8 +29,11 @@ node {
 	}
 
 	stage('Remote SSH') {
-        sshCommand remote: remote, command: "/opt/sh/test.sh restart base-springboot.jar"
+	    withCredentials([sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'root')]) {
+            remote.user = userName
+            remote.identityFile = identity
+            sshCommand remote: remote, command: "/opt/sh/test.sh restart base-springboot.jar"
+        }
     }
-
-
+    
 }
