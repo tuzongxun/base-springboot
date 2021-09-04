@@ -1,10 +1,5 @@
 pipeline {
     agent any
-    def remote = [:]
-    remote.name = 'test'
-    remote.host = '192.168.19.200'
-    remote.user = 'root'
-    remote.allowAnyHosts = true
 
     stages {
         //打印信息
