@@ -28,8 +28,8 @@ node {
 	}
 
 	stage('Remote SSH') {
-        sshScript remote: remote, script: "/opt/sh/test.sh restart base-springboot.jar"
+        sshCommand remote: remote, command: "/opt/sh/test.sh restart base-springboot.jar"
     }
 
-	
+
 }
