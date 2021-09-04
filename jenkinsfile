@@ -3,6 +3,7 @@ node {
     remote.name = 'test'
     remote.host = '192.168.19.200'
     remote.user = 'root'
+    remote.password = '123456'
     remote.allowAnyHosts = true
 
 	stage('Print Message') {
