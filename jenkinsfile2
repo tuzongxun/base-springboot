@@ -23,7 +23,7 @@ node {
 
 	stage('start/restart service') {
         echo "【start/restart service】"
-        sh "/opt/sh/test.sh restart base-springboot.jar"
+        sh "JENKINS_NODE_COOKIE=dontKillMe /opt/sh/test.sh restart base-springboot.jar"
     }
 
 }
