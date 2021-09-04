@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    def remote = [:]
+    remote.name = 'test'
+    remote.host = '192.168.19.200'
+    remote.user = 'root'
+    remote.allowAnyHosts = true
 
     stages {
         //打印信息
@@ -53,10 +58,11 @@ pipeline {
 
     	stage('Deploy to the Target server') {
     		steps {
-    			//部署到${env}环境，授权
-    			echo "【启动服务】"
-    			sh 'chmod u+x /opt/sh/test.sh'
-    			sh '/opt/sh/test.sh restart base-springboot.jar'
+    			withCredentials([sshUserPrivateKey(credentialsId: '3bdb20f7-1c4f-4a34-98c0-ef1b9202cbe2', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'root')]) {
+                    remote.user = 'root'
+                    remote.identityFile = identity
+                    sshCommand remote: remote, command: "/opt/sh/test.sh restart base-springboot.jar"
+                }
     		}
     	}
 
