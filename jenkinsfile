@@ -18,13 +18,14 @@ node {
 	//上传jar
 	stage('Push jar') {
 		echo "【push jar】"
-		sh 'cp /root/.jenkins/workspace/pip-test/target/base-springboot-0.0.1-SNAPSHOT.jar /opt/code/base-springboot.jar'
+		sh 'scp /root/.jenkins/workspace/pip-test/target/base-springboot-0.0.1-SNAPSHOT.jar root@192.168.19.200:/opt/code/base-springboot.jar'
 		sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
 	}
 
 	stage('Deploy to the Target server') {
 		echo "【启动服务】"
+		sh 'ssh 192.168.19.200'
 		sh 'chmod u+x /opt/sh/test.sh'
-		sh 'JENKINS_NODE_COOKIE=dontKillMe /opt/sh/test.sh restart base-springboot.jar'
+		sh '/opt/sh/test.sh restart base-springboot.jar'
 	}
 }
