@@ -17,7 +17,7 @@ node {
 	//上传jar
 	stage('Push jar') {
 		echo "【push jar】"
-		sh 'scp /root/.jenkins/workspace/pip-test/target/base-springboot-0.0.1-SNAPSHOT.jar root@192.168.19.200:/opt/code/base-springboot.jar'
+		sh 'cp /root/.jenkins/workspace/pip-test/target/base-springboot-0.0.1-SNAPSHOT.jar /opt/code/base-springboot.jar'
 		sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
 	}
 
