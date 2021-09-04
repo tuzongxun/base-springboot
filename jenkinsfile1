@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    stages {
+        //打印信息
+    	stage('Print Message') {
+    		steps {
+    			echo "【start build】 workspace: ${WORKSPACE}"
+    		}
+    	}
+
+    	stage('git pull code') {
+    		steps {
+    			echo "【git pull】"
+    			git branch: 'jenkin-test', credentialsId: '3bdb20f7-1c4f-4a34-98c0-ef1b9202cbe2', url: 'git@github.com:tuzongxun/base-springboot.git'
+    		}
+    	}
+
+
+    	//mvn打包
+    	stage('mvn build project') {
+    		steps {
+    			echo "【mvn build】"
+    			script {
+    				try {
+    				//刚开始使用mvn clean package 提示找不到mvn,所以就这样指定地址，指定配置文件
+    				    sh	'mvn clean package'
+    				} catch (err) {
+    					echo 'mvn打包失败'
+    				}
+    			}
+    		}
+    	}
+
+    	//上传jar
+    	stage('Push jar') {
+    		steps {
+    			echo "【push jar】"
+    			dir('/root/.jenkins/workspace/pip-test') { //指定工作目录
+    				script {
+    					try {
+    						sh 'pwd'
+    						sh 'cp ./target/base-springboot-0.0.1-SNAPSHOT.jar /opt/code/base-springboot.jar'
+    					} catch (err) {
+    						echo "上传jar构建失败"
+    					}
+    				}
+    			}
+    			//推送镜像后，删除工作空叫初Jenkinsfile & start.sh 以外所有文件
+    			sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
+    		}
+    	}
+
+    	stage('Deploy to the Target server') {
+    		steps {
+    			//部署到${env}环境，授权
+    			echo "【启动服务】"
+    			sh 'chmod u+x /opt/sh/test.sh'
+    			sh '/opt/sh/test.sh restart base-springboot.jar'
+    		}
+    	}
+
+    }
+}
