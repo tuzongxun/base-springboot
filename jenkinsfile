@@ -25,6 +25,6 @@ node {
 	stage('Deploy to the Target server') {
 		echo "【启动服务】"
 		sh 'chmod u+x /opt/sh/test.sh'
-		sh '/opt/sh/test.sh restart base-springboot.jar'
+		sh 'JENKINS_NODE_COOKIE=dontKillMe /opt/sh/test.sh restart base-springboot.jar'
 	}
 }
