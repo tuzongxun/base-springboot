@@ -36,7 +36,7 @@ pipeline {
     	stage('Push jar') {
     		steps {
     			echo "【push jar】"
-    			dir('/root/.jenkins/workspace/pip-test') { //指定工作目录
+    			dir('/root/.jenkins/workspace/springboot-pipeline') { //指定工作目录
     				script {
     					try {
     						sh 'pwd'
@@ -47,7 +47,7 @@ pipeline {
     				}
     			}
     			//推送镜像后，删除工作空叫初Jenkinsfile & start.sh 以外所有文件
-    			sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
+    			sh '''rm -rf  `ls | egrep -v '(jenkinsfile|start.sh)'` '''
     		}
     	}
 
