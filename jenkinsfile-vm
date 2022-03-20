@@ -1,0 +1,39 @@
+node {
+    def remote = [:]
+    remote.name = 'test'
+    remote.host = '192.168.19.200'
+    remote.user = 'root'
+    remote.allowAnyHosts = true
+
+	stage('Print Message') {
+		echo "【start build】 workspace: ${WORKSPACE}"
+	}
+
+	stage('git pull code') {
+		echo "【git pull】"
+		git branch: 'jenkin-test', credentialsId: '3bdb20f7-1c4f-4a34-98c0-ef1b9202cbe2', url: 'git@github.com:tuzongxun/base-springboot.git'
+	}
+
+	//mvn打包
+	stage('mvn build project') {
+		echo "【mvn build】"
+		sh	'mvn clean package'
+	}
+
+	//上传jar
+	stage('Push jar') {
+		echo "【push jar】"
+		sh 'scp /root/.jenkins/workspace/pip-test/target/base-springboot-0.0.1-SNAPSHOT.jar root@192.168.19.200:/opt/code/base-springboot.jar'
+		sh '''rm -rf  `ls | egrep -v '(Jenkinsfile|start.sh)'` '''
+	}
+
+	stage('start/restart service') {
+        withCredentials([sshUserPrivateKey(credentialsId: '3bdb20f7-1c4f-4a34-98c0-ef1b9202cbe2', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'root')]) {
+            echo "【start/restart service】"
+            remote.user = 'root'
+            remote.identityFile = identity
+            sshCommand remote: remote, command: "/opt/sh/test.sh restart base-springboot.jar"
+        }
+    }
+
+}
