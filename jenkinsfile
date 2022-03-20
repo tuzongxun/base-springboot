@@ -47,7 +47,7 @@ pipeline {
     				}
     			}
     			//推送镜像后，删除工作空叫初Jenkinsfile & start.sh 以外所有文件
-    			sh '''rm -rf  `ls | egrep -v '(jenkinsfile|start.sh)'` '''
+    			//sh '''rm -rf  `ls | egrep -v '(jenkinsfile|start.sh)'` '''
     		}
     	}
 
