@@ -19,7 +19,7 @@ pipeline {
         stage('Code Analysis'){
             steps{
                 echo "【Code Analysis】"
-                echo "${SONAR_HOst_URL}"
+                echo "${SONAR_HOST_URL}"
                 echo "${SONAR_AUTH_TOKEN}"
                 script{
                     def sonarHome = tool name: 'sonarqube4.1.0',type: 'hudson.plugins.sonar.SonarRunnerInstallation'
