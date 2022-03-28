@@ -29,15 +29,6 @@ pipeline {
             }
         }
 
-        stage("Quality Gate"){
-            steps{
-                echo "【Quality Gate】"
-                timeout(time:1,unit: 'HOURS'){
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
-
     	//mvn打包
     	stage('mvn build project') {
     		steps {
