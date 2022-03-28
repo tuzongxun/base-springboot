@@ -19,7 +19,7 @@ pipeline {
         stage('Code Analysis'){
             steps{
                 script{
-                    def sonarHome = tool name: 'sonarqube4.7.0',type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    def sonarHome = tool name: 'sonarqube4.1.0',type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     withSonarQubeEnv('sonar'){
                         sh "${sonarHome}/bin/sonar-sanner -Dsonar.host.url=${SONAR_HOME_URL} -Dsonar.login=${SONAR_AUTH_TOKEN}"
                     }
