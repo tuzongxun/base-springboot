@@ -22,7 +22,7 @@ pipeline {
                 script{
                     def sonarHome = tool name: 'sonarqube3.3.0',type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     echo "${sonarHome}"
-                    withSonarQubeEnv('sonar'){
+                    withSonarQubeEnv('sonarqube3.3.0'){
                         sh "${sonarHome}/bin/sonar-sanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN}"
                     }
                 }
